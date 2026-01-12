@@ -1,0 +1,30 @@
+@import "tailwindcss";
+html,
+body {
+  @apply h-full ;
+}
+
+/* For the whole scrollbar */
+::-webkit-scrollbar {
+  width: 12px; /* Adjust width */
+}
+
+/* For the track */
+::-webkit-scrollbar-track {
+  background: rgb(0, 0, 0); /* Light grey track */
+}
+
+::-webkit-scrollbar {
+  width: 1px; /* Set the width for a vertical scrollbar */
+}
+/* For the handle */
+::-webkit-scrollbar-thumb {
+  background: #f4f4f4; /* Dark grey handle */
+  border-radius: 6px;
+  width:2px; /* Rounded corners */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
