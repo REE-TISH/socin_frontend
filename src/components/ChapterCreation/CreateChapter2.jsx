@@ -53,7 +53,7 @@ function CreateChapter2() {
         if (isLoading) return; // Prevent submissions while AI is generating response        
         setIsLoading(true);
         const toastId = toast.loading("Generating chapter content...", {position: "top-right",autoClose: false,theme: "dark"});
-        const eventSource = new EventSource(`http://localhost:8000/AI/create-chapter/${novel_id}?user_query=${input}`)
+        const eventSource = new EventSource(`https://socin-backend.onrender.com/AI/create-chapter/${novel_id}?user_query=${input}`)
         eventSource.onmessage = (event)=>{
                 
 
