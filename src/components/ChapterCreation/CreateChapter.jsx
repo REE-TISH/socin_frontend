@@ -59,9 +59,10 @@ function CreateChapter() {
   //     toast.error("Something went wrong",{theme:"dark"})
   //   })
   // }
+
   const handleSubmit = ()=>{
 
-    const eventSource = new EventSource(`http://localhost:8000/AI/create-chapter/${novel_id}?user_query=${prompt}`)
+    const eventSource = new EventSource(`https://socin-backend.onrender.com/AI/create-chapter/${novel_id}?user_query=${prompt}`)
 
     eventSource.onmessage = (event)=>{
     if (event.data == '__DONE__'){
