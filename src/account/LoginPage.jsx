@@ -3,7 +3,7 @@ import Login from '@react-login-page/page1';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { LOCAL_URL } from '../utils/api';
+import { LOCAL_URL, PROD_URL } from '../utils/api';
 import { GoogleLogin } from '@react-oauth/google';
 import GoogleLoginButton from './LoginWithGoogle';
 import { ToastErrorMessage, ToastSuccessMessage } from '../utils/toastMessages';
@@ -13,13 +13,13 @@ const LoginPage = () => {
     const[password,setPassword] = useState('')
     const navigate = useNavigate()
 
-    const prod_url = 'https://socin-backend.onrender.com'
+    
     const handleLogin = ()=>{
         if(!username || !password) {
             ToastErrorMessage("Enter proper details")
             return
         }
-        axios.post(`${LOCAL_URL}/user/token/`,{user_id: username,password: password})
+        axios.post(`${PROD_URL}/user/token/`,{user_id: username,password: password})
         .then(response=>{
             localStorage.setItem('accessToken',response.data.access);
             localStorage.setItem('refreshToken',response.data.refresh);
