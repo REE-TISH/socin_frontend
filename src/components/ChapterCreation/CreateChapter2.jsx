@@ -2,7 +2,7 @@ import { useEffect, useState , useRef} from 'react';
 import { Book, MessageSquare, Send, ChevronDown } from 'lucide-react';
 import CreateChapter from './CreateChapter';
 import axios from 'axios';
-import axiosInstance from '../../utils/api';
+import axiosInstance, { PROD_URL } from '../../utils/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { ToastErrorMessage , ToastSuccessMessage} from '../../utils/toastMessages';
@@ -50,7 +50,7 @@ function CreateChapter2() {
         if (isLoading) return; // Prevent submissions while AI is generating response        
         setIsLoading(true);
         const toastId = toast.loading("Generating chapter content...",);
-        const eventSource = new EventSource(`${LOCAL_URL}/AI/create-chapter/${novel_id}?user_query=${input}`)
+        const eventSource = new EventSource(`${PROD_URL}/AI/create-chapter/${novel_id}?user_query=${input}`)
         eventSource.onmessage = (event)=>{
                 
 
