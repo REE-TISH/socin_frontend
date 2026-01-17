@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star, Calendar, User, BookOpen, Play ,Slack,BookmarkCheck,Bookmark ,Heart,HeartHandshake} from 'lucide-react';
 
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import Loader from '../Loader';
 import { trackActions } from '../../utils/trackActions';
 

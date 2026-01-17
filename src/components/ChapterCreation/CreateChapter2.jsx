@@ -2,10 +2,11 @@ import { useEffect, useState , useRef} from 'react';
 import { Book, MessageSquare, Send, ChevronDown } from 'lucide-react';
 import CreateChapter from './CreateChapter';
 import axios from 'axios';
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { ToastErrorMessage , ToastSuccessMessage} from '../../utils/toastMessages';
+import { LOCAL_URL } from '../../utils/api';
 
 const mockData = {
   novelTitle: "The Last Guardian",
@@ -22,7 +23,7 @@ const mockData = {
 
 function CreateChapter2() {
     const [input, setInput] = useState('');
-    const [showSummary, setShowSummary] = useState(true);
+    const [showSummary, setShowSummary] = useState(false);
     const {novel_id,novel_name} = useParams();
     const [novelData,setNovelData] = useState(null);
     const [editedNovelData,setEditedNovelData] = useState(''); // Content after AI edits
@@ -30,11 +31,7 @@ function CreateChapter2() {
     const isNewResponseChunk = useRef(false); // To keep track of new response chunk
     const navigate = useNavigate();
 
-    const handleSend = () => {
-        if (input.trim()) {
-        setInput('');
-        }
-    };
+
 
     // API called to get the chapter user is working on 
     useEffect(()=>{
@@ -52,8 +49,8 @@ function CreateChapter2() {
     const handleSubmit = ()=>{
         if (isLoading) return; // Prevent submissions while AI is generating response        
         setIsLoading(true);
-        const toastId = toast.loading("Generating chapter content...", {position: "top-right",autoClose: false,theme: "dark"});
-        const eventSource = new EventSource(`https://socin-backend.onrender.com/AI/create-chapter/${novel_id}?user_query=${input}`)
+        const toastId = toast.loading("Generating chapter content...",);
+        const eventSource = new EventSource(`${LOCAL_URL}/AI/create-chapter/${novel_id}?user_query=${input}`)
         eventSource.onmessage = (event)=>{
                 
 

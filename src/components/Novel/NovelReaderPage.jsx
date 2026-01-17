@@ -1,7 +1,7 @@
 import React, { useState, useEffect ,useRef} from 'react';
 import { useParams, useNavigate, NavLink, replace } from 'react-router-dom';
 import { ArrowLeft, Slack} from 'lucide-react';
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import Loader from '../Loader';
 import { trackActions } from '../../utils/trackActions';
 

@@ -1,4 +1,4 @@
-;import axiosInstance from "../account/api";
+;import axiosInstance from "./api";
 
 export const trackActions = async (action,novel_id)=>{
     try {

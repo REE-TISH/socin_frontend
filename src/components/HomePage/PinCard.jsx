@@ -13,11 +13,11 @@ function PinCard({ novel }) {
     //   onMouseEnter={() => setIsHovered(true)}
     //   onMouseLeave={() => setIsHovered(false)}
     >
-      <div  onClick={()=>navigate(`/novel/${novel.id}/`)} className={` sm:w-40 md:w-45 lg:w-50  cursor-pointer relative overflow-hidden rounded-2xl ${novel.is_premium && 'shadow-2xl shadow-cyan-950'}  bg-gray-900`}>
+      <div  onClick={()=>navigate(`/novel/${novel.id}/`)} className={`  md:max-w-50  cursor-pointer relative overflow-hidden rounded-2xl ${novel.is_premium && 'shadow-2xl shadow-cyan-950'}  bg-gray-900`}>
         <img
           src={novel.novel_image}
           alt={novel.name}
-          className="sm:h-60 md:h-70  lg:h-88 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="aspect-[3/5]  lg:h-88 w-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
 
@@ -64,15 +64,15 @@ function PinCard({ novel }) {
         )} */}
       </div>
 
-      <div className=" flex justify-between items-center mt-2 px-1">
-        <h3 className="text-white sm:w-20 md:w-40 text-xs font-bold line-clamp-2">{novel.name}</h3>
+      <div className=" flex justify-between  mt-1 px-1">
+        <h3 className="text-gray-400 text-[10px] font-bold line-clamp-2">{novel.name}</h3>
         
         
-          <div className="flex flex-col items-center  ">
-            <span className="text-gray-400 text-[10px]">Created by</span>
-            <span className="text-white font-bold text-xs">{novel.author}</span>
+      
+            
+        <span className="text-white font-bold sm:text-xs text-[9px] ">{novel.author}</span>
         
-          </div>
+          
         </div>
       </div>
     

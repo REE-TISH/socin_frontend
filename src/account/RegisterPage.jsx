@@ -1,39 +1,79 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { LOCAL_URL } from '../utils/api'
+import { ToastErrorMessage, ToastSuccessMessage } from '../utils/toastMessages'
+
 
 function RegisterPage() {
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    
     const [image,setImage] = useState(null)
     const navigate = useNavigate()
+    const [formData,setFormData] = useState({
+                    username:'',
+                    user_id:'',
+                    email:'',
+                    password:'',
+                })
 
-    const handleCreateUser = () => {
-        // 1. Basic validation
-        if (!username || !email || !password ) {
-            toast.error('Please fill in all fields',{theme:"dark"})
+
+    
+    const handleDataChange = (e)=>{
+        const { name, value } = e.target;
+        setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    }
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            toast("Make sure to remember USER ID")
+        },1000)
+        
+    },[])
+
+    const handleCreateUser = async() => {
+
+        const {user_id,username,email,password} = formData
+
+        //  Basic validation
+        if (!username || !email || !password || !user_id) {
+            ToastErrorMessage("Enter proper details")
             return
         }
+        const CloudformData = new FormData();
+        CloudformData.append("file", image);
+        CloudformData.append("upload_preset", "Socin_images");
+        let cloudinaryImage = null
+        
+        if (image){
+        // Upload the image to Cloud
+        const cloudinaryResponse = await axios.post("https://api.cloudinary.com/v1_1/novelsocinbackend/image/upload",CloudformData);
 
-        const data = new FormData
-        data.append('username',username)
-        data.append('email',email)
-        data.append('password',password)
-        data.append('avatar',image)
+        cloudinaryImage = cloudinaryResponse.data.secure_url
+        }
 
-        axios.post('https://socin-backend.onrender.com/api/create-user/', data)
+        const data = {
+            username:username,
+            user_id:user_id,
+            email:email,
+            password:password,
+            avatar:cloudinaryImage,
+        }
+
+        axios.post(`${LOCAL_URL}/user/create-user/`, data)
             .then((response) => {
                 // Usually successful POST is 201 Created
                 if (response.status === 200 || response.status === 201) {
-                    toast.success("Account created successfully",{theme:"dark"})
+                    ToastSuccessMessage("Account created")
                     navigate('/login/')
                 }
             })
             .catch((err) => {
                 console.error(err)
-                toast.error(err.response?.data?.message || "Something went wrong",{theme:"dark"})
+                ToastErrorMessage(err.response?.data?.message || "Something went wrong")
             })
     }
 
@@ -44,22 +84,37 @@ function RegisterPage() {
                     <h1 className='text-white text-xl'>Register !!</h1>
                 </div>
                 <div className='flex flex-col gap-4'>
+                    {/* User_ID */}
+                    <div>
+                        <p className='text-white text-[10px]'>User Id</p>
+                        <input 
+                            type="text" 
+                            name='user_id'
+                            onChange={(e) => handleDataChange(e)} 
+                            className='text-white focus:border-slate-900 border rounded-xl px-3 py-1 border-slate-700 bg-transparent' 
+                            placeholder='Enter user id' 
+                        />
+                    </div>
+
                     {/* Username */}
                     <div>
                         <p className='text-white text-[10px]'>username</p>
                         <input 
                             type="text" 
-                            onChange={(e) => setUsername(e.target.value)} 
+                            name='username'
+                            onChange={(e) => handleDataChange(e)} 
                             className='text-white focus:border-slate-900 border rounded-xl px-3 py-1 border-slate-700 bg-transparent' 
-                            placeholder='Enter Username' 
+                            placeholder='Enter username'
                         />
                     </div>
+
                     {/* Email */}
                     <div>
                         <p className='text-white text-[10px]'>Email</p>
                         <input 
                             type="email" 
-                            onChange={(e) => setEmail(e.target.value)} 
+                            name='email'
+                            onChange={(e) => handleDataChange(e)} 
                             className='text-white focus:border-slate-900 border rounded-xl px-3 py-1 border-slate-700 bg-transparent' 
                             placeholder='Enter email' 
                         />
@@ -69,7 +124,8 @@ function RegisterPage() {
                         <p className='text-white text-[10px]'>password</p>
                         <input 
                             type="password" 
-                            onChange={(e) => setPassword(e.target.value)} 
+                            name='password'
+                            onChange={(e) => handleDataChange(e)} 
                             className='text-white focus:border-slate-900 border rounded-xl px-3 py-1 border-slate-700 bg-transparent' 
                             placeholder='Enter password' 
                         />

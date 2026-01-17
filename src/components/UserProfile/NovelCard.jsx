@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import { Pencil } from "lucide-react";
 
 
 function NovelCard({ novel }) {
@@ -7,14 +7,14 @@ function NovelCard({ novel }) {
 
   return (
     <div 
-     className="bg-zinc-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border border-zinc-800 hover:border-zinc-700">
+     className="bg-zinc-900 rounded-lg overflow-hidden hover:transform transition-all duration-300 shadow-lg hover:shadow-2xl border border-zinc-800 hover:border-zinc-700">
       {/* Novel Image */}
       <div className="relative">
         <img
           src={novel.novel_image}
           alt={novel.name}
           onClick={()=>{navigate(`/novel/${novel.id}/`)}}
-          className="w-full h-48 object-cover"
+          className="w-full aspect-[2/1] object-cover"
         />
         <div className="absolute top-4 right-4">
           {novel.isPublic ? (
@@ -49,25 +49,29 @@ function NovelCard({ novel }) {
             {novel.chapter_count} chapters
           </span>
           
-          
+          <Pencil className="h-3 w-3 sm:h-5 sm:w-5 hover:scale-105 cursor-pointer"/>
         </div>
 
+        {/* Show likes and views only for public novels */}
         {novel.isPublic && (
           <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-t border-zinc-800">
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              {novel.views}
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-              {novel.likes}
-            </span>
+  
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                {novel.views}
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                {novel.likes}
+              </span>
+          
           </div>
+
         )}
 
 

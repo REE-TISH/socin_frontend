@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Send, Sparkles, Trash2 } from 'lucide-react';
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { LOCAL_URL } from '../../utils/api';
+
 function CreateChapter() {
   const [prompt, setPrompt] = useState('');
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {novel_id,novel_name} = useParams()
   const [genreatedResult,setGeneratedResult] = useState('')
+  
   const navigate = useNavigate()
   // const handleSubmit = async () => {
   //   if (!prompt.trim()) return;
@@ -19,6 +22,7 @@ function CreateChapter() {
   //   setResult(`Result for: "${prompt}"\n\nThis is where your output would appear. The interface is now ready to be connected to your backend processing logic.`);
   //   setIsLoading(false);
   // };
+
 
   const handleClear = () => {
     setPrompt('');
@@ -62,7 +66,7 @@ function CreateChapter() {
 
   const handleSubmit = ()=>{
 
-    const eventSource = new EventSource(`https://socin-backend.onrender.com/AI/create-chapter/${novel_id}?user_query=${prompt}`)
+    const eventSource = new EventSource(`${LOCAL_URL}/AI/create-chapter/${novel_id}?user_query=${prompt}`)
 
     eventSource.onmessage = (event)=>{
     if (event.data == '__DONE__'){

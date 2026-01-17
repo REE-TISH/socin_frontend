@@ -1,22 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {Gem , LogOut} from 'lucide-react'
+import {Gem , LogOut , BookOpen} from 'lucide-react'
 
-function Header({is_premium}) {
+function Header({meta_data}) {
   const [activeTab, setActiveTab] = useState('home');
   
-  const PremiumFeature = ()=>{
-      return <>
-
-              {!is_premium && <Link
-                to={'/subscriptions/'}
-                onClick={() => setActiveTab('create')}
-                className={`px-4 py-2 cursor-pointer rounded-full font-semibold transition-all text-white gap-1 flex`}
-              >
-               <Gem/> Get Premium
-          </Link>}
-      </>
-  }
 
   const LogoutUser = ()=>{
     localStorage.removeItem('accessToken')
@@ -36,12 +24,12 @@ function Header({is_premium}) {
               <h1 className="text-xl font-semibold text-white">壯鎭</h1>
             </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center">
            
-            <nav className=" flex items-center md:gap-4">
+            <nav className=" flex items-center ">
               <button
                 onClick={() => setActiveTab('home')}
-                className={`px-4 py-2 rounded-full font-semibold transition-all ${
+                className={`px-2 py-1 rounded-full font-semibold transition-all ${
                   activeTab === 'home'
                     ? 'bg-white text-black'
                     : 'text-white hover:bg-gray-900'
@@ -58,22 +46,25 @@ function Header({is_premium}) {
                     : 'text-white hover:bg-gray-900'
                 }`}
               >
-                Profile
+                <div className='flex gap-1 justify-center items-center'>
+                Create <BookOpen/>  
+                </div> 
+
               </Link>
-              {!is_premium && <Link
+              {!meta_data.is_premium && <Link
                 to={'/subscriptions/'}
                 onClick={() => setActiveTab('create')}
-                className={`px-4 py-2 cursor-pointer rounded-full font-semibold transition-all text-white gap-1 flex`}
+                className={`px-2 py-1 cursor-pointer rounded-full font-semibold transition-all text-white gap-1 flex`}
               >
                <Gem/> Get Premium
               </Link>}
               
-               <Link
-                to={'/login/'}
-                onClick={LogoutUser}
-                className={`px-4 py-2 cursor-pointer rounded-full font-semibold transition-all text-white gap-1 flex`}
+              <Link
+                to={'/edit-profile/'}
+                onClick={() => setActiveTab('create')}
+                className={`px-2 py-1 cursor-pointer rounded-full font-semibold transition-all text-white gap-1 flex`}
               >
-                <LogOut/> Logout
+               <img src={meta_data.avatar || null} className='h-8 w-8 rounded-2xl object-cover' />
               </Link>
 
             </nav>

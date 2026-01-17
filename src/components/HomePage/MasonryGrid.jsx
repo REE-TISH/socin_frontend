@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PinCard from './PinCard';
 import axios from 'axios'; 
 import Loader from '../Loader';
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import Header from './Header';
 
 const samplePins = [
@@ -171,7 +171,7 @@ const samplePins = [
 function MasonryGrid() {
   const [filteredPins, setFilteredPins] = useState(samplePins);
   const [novels,setNovels] = useState(null)
-  const [isPremium,setIsPremium] = useState(false)
+  const [metaData,setMetaData] = useState(null)
 
   // useEffect(() => {
   //   if (searchQuery.trim() === '') {
@@ -188,7 +188,7 @@ function MasonryGrid() {
     axiosInstance.get('/api/novel-content')
     .then((response)=>{
       if (response.data.results.length > 0){
-          setIsPremium(response.data.results[0].is_premium)
+          setMetaData(response.data.extra_data)
           setNovels(response.data.results)
         }
       else{
@@ -205,10 +205,10 @@ function MasonryGrid() {
   
 
   return (<>
-    <Header is_premium={isPremium}/>
+    <Header meta_data={metaData}/>
     <div className="  max-w-7xl mx-auto px-4 py-6">
       {filteredPins.length > 0 ? (
-        <div className=" grid grid-cols-2  md:flex lg:pl-12 md:flex-wrap  gap-4">
+        <div className=" grid grid-cols-3 md:flex lg:pl-12 md:flex-wrap  gap-4">
           {novels.map(novel => (
             <PinCard key={novel.id} novel={novel} />
           ))}

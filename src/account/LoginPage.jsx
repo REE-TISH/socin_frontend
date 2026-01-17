@@ -3,6 +3,10 @@ import Login from '@react-login-page/page1';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { LOCAL_URL } from '../utils/api';
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleLoginButton from './LoginWithGoogle';
+import { ToastErrorMessage, ToastSuccessMessage } from '../utils/toastMessages';
 
 const LoginPage = () => {
     const[username,setUsername] = useState('')
@@ -12,18 +16,18 @@ const LoginPage = () => {
     const prod_url = 'https://socin-backend.onrender.com'
     const handleLogin = ()=>{
         if(!username || !password) {
-            toast.error("Enter full details",{theme:'dark'})
+            ToastErrorMessage("Enter proper details")
             return
         }
-        axios.post(`https://socin-backend.onrender.com/api/token/`,{username: username,password: password})
+        axios.post(`${LOCAL_URL}/user/token/`,{user_id: username,password: password})
         .then(response=>{
             localStorage.setItem('accessToken',response.data.access);
             localStorage.setItem('refreshToken',response.data.refresh);
             navigate('/')
-            toast.success("Logged In",{theme:'dark'})
+            ToastSuccessMessage("Login Successful")
         })
         .catch(err=>{
-            navigate('/signup')
+            navigate('/signup/')
         })
     }
 
@@ -33,15 +37,16 @@ const LoginPage = () => {
         <div className='min-h-screen bg-gradient-to-br flex justify-center items-center from-gray-900 to-black'>
             {/* Login Section */}
             <div className='bg-black border rounded-2xl border-slate-600 p-8'>
+            <div >
                 <div className='flex justify-center items-center'>
                     <h1 className=' text-white'>Login !!</h1>
                 </div>
 
                 <div className='flex flex-col gap-4'>
-                    {/* Username */}
+                    {/* User ID */}
                     <div className=''>
-                        <p className=' text-white text-[10px] bg-black '>username</p>
-                        <input type="text" onChange={(e)=>setUsername(e.target.value)} className='text-white focus:border-slate-900 border rounded-xl px-3 py-1 border-slate-700' placeholder='Enter ther Username' />
+                        <p className=' text-white text-[10px] bg-black '>user id</p>
+                        <input type="text" onChange={(e)=>setUsername(e.target.value)} className='text-white focus:border-slate-900 border rounded-xl px-3 py-1 border-slate-700' placeholder='Enter user id' />
                     </div>
 
                     {/* Password */}
@@ -58,7 +63,12 @@ const LoginPage = () => {
 
                 </div>
 
-            </div>        
+            </div>  
+            OR 
+            <div>
+                <GoogleLoginButton />
+            </div>   
+            </div>      
         </div>
 
 </>)}

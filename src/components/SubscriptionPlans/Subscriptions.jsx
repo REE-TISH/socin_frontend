@@ -1,6 +1,6 @@
 import { Check, X, Zap,ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import { toast } from 'react-toastify';
 
 
@@ -12,7 +12,7 @@ function Subscriptions() {
     const free_plan = [
     
         { name: 'Create upto 5 Novels', free: true },
-        { name: 'Create 2 Chapters/day', free: true },
+        { name: 'Create 60 Chapters/month', free: true },
         { name: 'Basic Analytics', free: true },
         { name: 'Unlimited Projects', free: false },
         { name: 'Priority Support', free: false, },
@@ -21,7 +21,7 @@ function Subscriptions() {
 
     const premium_plan = [
         { name: 'Unlimited Novels',  premium: true },
-        { name: '15 Chapters/day', premium: true },
+        { name: '450 Chapters/month', premium: true },
         { name: 'Basic Analytics',premium: true },
         { name: 'Unlimited Projects', premium: true },
         { name: 'Priority Support', premium: true },

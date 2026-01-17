@@ -2,8 +2,10 @@
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 
-const BASE_URL = "https://socin-backend.onrender.com"; // replace with your backend
-const REFRESH_URL = `${BASE_URL}/api/token/refresh/`; // endpoint to refresh token
+
+const LOCAL_URL = "http://localhost:8000"; // for local development
+const PROD_URL = "https://socin-backend.onrender.com"; // replace with your backend
+const REFRESH_URL = `${LOCAL_URL}/user/token/refresh/`; // endpoint to refresh token
 
 // Helper function to check if token expired
 const isTokenExpired = (token) => {
@@ -18,7 +20,7 @@ const isTokenExpired = (token) => {
 
 // Create Axios instance
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: LOCAL_URL,
 });
 
 // Request interceptor: attach token
@@ -68,3 +70,5 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
+
+export {LOCAL_URL} ;

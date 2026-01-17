@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import NovelCard from './NovelCard';
 import CreateNovelModal from './CreateNovelModal'
-import {ArrowLeft} from 'lucide-react'
+import {ArrowLeft, Pencil} from 'lucide-react'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axiosInstance from '../../account/api';
+import axiosInstance from '../../utils/api';
 import Loader from '../Loader';
 import { Crown } from 'lucide-react';
 
@@ -74,13 +74,15 @@ function UserProfile() {
   };
 
   useEffect(()=>{
-    axiosInstance.get('/api/user-profile/')
+    axiosInstance.get('/user/user-profile/')
     .then((response)=>{
       setIs_premium(response.data.is_premium)
+      
       setUser(response.data)
     })
     axiosInstance.get("/api/personal-novels/")
     .then((response)=>{
+
       setNovels(response.data.results)})
   },[])
 
@@ -95,11 +97,11 @@ function UserProfile() {
   const privateNovels = novels.filter(novel => !novel.isPublic);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-zinc-900 rounded-lg shadow-xl overflow-hidden mb-8">
+        <div className=" rounded-lg shadow-2xl shadow-black overflow-hidden mb-8 border border-slate-900 ">
          
-          <div className="h-48 bg-linear-to-r p-5 from-zinc-800 to-zinc-700"><Link to={'/'}><ArrowLeft/></Link></div>
+          <div className="h-48  flex p-1"><Link to={'/'}><ArrowLeft/></Link></div>
            
         {/* User Profile Info */}
           <div className="px-8 pb-8">
@@ -107,19 +109,21 @@ function UserProfile() {
               
              <div className='flex flex-col items-center'>
                 {is_premium && <Crown size={30} className='text-amber-300 ml-10 rotate-15'/>}
+                
                <img
-                src={`http://localhost:8000/${user.avatar}`}
-                alt={user.name}
+                src={user.avatar || null}
+                alt='Avatar'
                 className="w-32 h-32 rounded-full border-4 border-zinc-900 object-cover"
               />
+              
              </div>
               <div className="mt-4 sm:mt-0 sm:ml-6 flex-1">
-                <h1 className="text-3xl font-bold text-white">{user.username}</h1>
-                <p className="text-gray-400 text-lg">{user.username}</p>
+                <h1 className="text-xl lg:text-3xl font-thin text-white">{user.username}</h1>
+                <p className="text-gray-400 font-thin text-[10px]">{user.user_id}</p>
               </div>
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="mt-4 sm:mt-0 bg-white text-black px-3 py-2 rounded-lg font-semibold cursor-pointer hover:bg-gray-200 transition-colors duration-200 flex items-center gap-2"
+                className="mt-4 sm:mt-0  text-gray-500 border border-slate-600 px-3 py-2 rounded-lg font-semibold cursor-pointer hover:text-white hover:border-white transition-colors duration-200 flex items-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -153,10 +157,10 @@ function UserProfile() {
         <div className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-green-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Public Novels
+                <p className='text-white font-thin'>Public Novels</p>
             </h2>
             <span className="text-gray-400">{publicNovels.length} novels</span>
           </div>
@@ -167,7 +171,7 @@ function UserProfile() {
               ))}
             </div>
           ) : (
-            <div className="bg-zinc-900 rounded-lg p-12 text-center">
+            <div className="bg-slate-950/50 border border-slate-900 rounded-lg p-12 text-center">
               <p className="text-gray-400">No public novels yet</p>
             </div>
           )}
@@ -177,10 +181,10 @@ function UserProfile() {
         <div>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <svg className="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              Private Novels
+                <p className='font-thin'>Private Novels</p>
             </h2>
             <span className="text-gray-400">{privateNovels.length} novels</span>
           </div>
@@ -191,7 +195,7 @@ function UserProfile() {
               ))}
             </div>
           ) : (
-            <div className="bg-zinc-900 rounded-lg p-12 text-center">
+            <div className="bg-slate-950/50 border border-slate-900 rounded-lg p-12 text-center">
               <p className="text-gray-400">No private novels yet</p>
             </div>
           )}
